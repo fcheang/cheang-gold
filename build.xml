@@ -1,0 +1,85 @@
+<project name="bhr" basedir="./" default="all">
+
+    <!-- Local system paths -->
+    <property name="servlet.jar" value="./extlib/servlet.jar"/>
+    <property name="jdbc20ext.jar" value="./extlib/jdbc2_0-stdext.jar"/>
+    <property name="log4j.jar" value="./extlib/log4j-1.2.14.jar"/>
+
+    <!-- Project settings -->
+    <property name="project.title" value="BHR"/>
+    <property name="project.distname" value="bhr"/>
+    <property name="project.version" value="1"/>
+
+    <!-- Path settings -->
+    <property name="doc.path" value="doc/api"/>
+    <property name="doc.src" value="src"/>
+
+    <!-- classpath for Struts 1.1 -->
+    <path id="compile.classpath">
+        <pathelement path ="${servlet.jar}"/>
+	<pathelement path ="${log4j.jar}"/>
+        <pathelement path ="${classpath}"/>
+    </path>
+
+
+    <!-- Check timestamp on files -->
+    <target name="prepare">
+        <tstamp/>
+    </target>
+
+
+    <!-- Normal build of application -->
+    <target name="compile" depends="prepare">
+        <javac debug="true" srcdir="src" destdir="./bhr/WEB-INF/classes">
+            <classpath refid="compile.classpath"/>
+        </javac>
+    </target>
+
+
+
+    <!-- Remove classes directory for clean build -->
+    <target name="clean"
+      description="Prepare for clean build">
+      <delete dir="./bhr/WEB-INF/classes/com"/>
+    </target>
+
+
+    <!-- Build Javadoc documentation -->
+    <target name="javadoc"
+     description="Generate JavaDoc API docs">
+        <delete dir="./doc/api"/>
+        <mkdir dir="./doc/api"/>
+        <javadoc sourcepath="./src/java"
+            destdir="./doc/api"
+            classpath="${servlet.jar}:${jdbc20ext.jar}"
+            packagenames="*"
+            author="true"
+            private="true"
+            version="true"
+            windowtitle="${project.title} API Documentation"
+            doctitle="&lt;h1&gt;${project.title} Documentation (Version ${project.version})&lt;/h1&gt;"
+            bottom="Copyright &#169; 2002">
+            <classpath refid="compile.classpath"/>
+        </javadoc>
+    </target>
+
+
+    <!-- Build entire project -->
+    <target name="project" depends="clean,prepare,compile"/>
+
+
+    <!-- Create binary distribution -->
+    <target name="dist"
+        description="Create binary distribution">
+      <copy file="log4j.properties" todir="./bhr/WEB-INF/classes"/>
+      <jar
+        jarfile="${project.distname}.war"
+        basedir="./bhr"/>
+    </target>
+
+    <!-- Build project and create distribution-->
+    <target name="all" depends="project,dist"/>
+
+</project>
+
+
