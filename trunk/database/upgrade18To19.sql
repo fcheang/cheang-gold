@@ -1,7 +1,7 @@
 ﻿use gold;
 
-drop table Employee;
-drop table Worksheet;
+#drop table Employee;
+#drop table Worksheet;
 
 CREATE TABLE `Employee` (
   `empId` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
