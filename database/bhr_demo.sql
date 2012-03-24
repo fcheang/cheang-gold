@@ -22,6 +22,61 @@ CREATE DATABASE IF NOT EXISTS gold;
 USE gold;
 
 --
+-- Definition of table `account_name`
+--
+
+DROP TABLE IF EXISTS `account_name`;
+CREATE TABLE `account_name` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_account_name_1` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `account_name`
+--
+
+/*!40000 ALTER TABLE `account_name` DISABLE KEYS */;
+INSERT INTO `account_name` (`id`,`name`) VALUES 
+ (5,'AA'),
+ (1,'BHR'),
+ (4,'HHI CCC'),
+ (2,'HHI Oak/UC'),
+ (3,'HHI PL'),
+ (6,'Waraich');
+/*!40000 ALTER TABLE `account_name` ENABLE KEYS */;
+
+
+--
+-- Definition of table `accounting_report`
+--
+
+DROP TABLE IF EXISTS `accounting_report`;
+CREATE TABLE `accounting_report` (
+  `dateOfWeek` datetime NOT NULL,
+  `accountId` int(10) unsigned NOT NULL,
+  `numBills` int(10) unsigned NOT NULL DEFAULT '0',
+  `amtPaid` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+  `numChecks` int(10) unsigned NOT NULL DEFAULT '0',
+  `amtChecks` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+  `amtCashCollected` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+  `numCheckDeposited` int(10) unsigned NOT NULL DEFAULT '0',
+  `amtDeposited` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+  PRIMARY KEY (`dateOfWeek`,`accountId`),
+  KEY `FK_accounting_report_1` (`accountId`),
+  CONSTRAINT `FK_accounting_report_1` FOREIGN KEY (`accountId`) REFERENCES `account_name` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `accounting_report`
+--
+
+/*!40000 ALTER TABLE `accounting_report` DISABLE KEYS */;
+/*!40000 ALTER TABLE `accounting_report` ENABLE KEYS */;
+
+
+--
 -- Definition of table `appointment`
 --
 
@@ -297,11 +352,11 @@ INSERT INTO `capability` (`roleName`,`permission`,`object`) VALUES
 
 
 --
--- Definition of table `case_manager_note`
+-- Definition of table `casemanagernote`
 --
 
-DROP TABLE IF EXISTS `case_manager_note`;
-CREATE TABLE `case_manager_note` (
+DROP TABLE IF EXISTS `casemanagernote`;
+CREATE TABLE `casemanagernote` (
   `userId` varchar(20) NOT NULL,
   `dateOfWeek` datetime NOT NULL,
   `plan` varchar(200) DEFAULT NULL,
@@ -309,23 +364,27 @@ CREATE TABLE `case_manager_note` (
   `assistanceNeeded` varchar(200) DEFAULT NULL,
   `plansForNextWeek` varchar(200) DEFAULT NULL,
   `other` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`dateOfWeek`)
+  PRIMARY KEY (`userId`,`dateOfWeek`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `case_manager_note`
+-- Dumping data for table `casemanagernote`
 --
 
-/*!40000 ALTER TABLE `case_manager_note` DISABLE KEYS */;
-/*!40000 ALTER TABLE `case_manager_note` ENABLE KEYS */;
+/*!40000 ALTER TABLE `casemanagernote` DISABLE KEYS */;
+INSERT INTO `casemanagernote` (`userId`,`dateOfWeek`,`plan`,`action`,`assistanceNeeded`,`plansForNextWeek`,`other`) VALUES 
+ ('Administrator','2012-03-18 00:00:00','abc',NULL,NULL,NULL,NULL),
+ ('demo','2012-03-25 00:00:00','T1','t2','t3','t4','t5'),
+ ('jeff','2012-03-18 00:00:00','Test1','Test2','Test3','Test4','Test5');
+/*!40000 ALTER TABLE `casemanagernote` ENABLE KEYS */;
 
 
 --
--- Definition of table `case_manager_report`
+-- Definition of table `casemanagerreport`
 --
 
-DROP TABLE IF EXISTS `case_manager_report`;
-CREATE TABLE `case_manager_report` (
+DROP TABLE IF EXISTS `casemanagerreport`;
+CREATE TABLE `casemanagerreport` (
   `userId` varchar(20) NOT NULL,
   `date` datetime NOT NULL,
   `numConsumer` int(10) unsigned NOT NULL DEFAULT '0',
@@ -343,15 +402,34 @@ CREATE TABLE `case_manager_report` (
   `numOutsideMeeting` int(10) unsigned NOT NULL DEFAULT '0',
   `numVisitNextWeek` int(10) unsigned NOT NULL DEFAULT '0',
   `numNonCompliantChart` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`date`)
+  PRIMARY KEY (`userId`,`date`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `case_manager_report`
+-- Dumping data for table `casemanagerreport`
 --
 
-/*!40000 ALTER TABLE `case_manager_report` DISABLE KEYS */;
-/*!40000 ALTER TABLE `case_manager_report` ENABLE KEYS */;
+/*!40000 ALTER TABLE `casemanagerreport` DISABLE KEYS */;
+INSERT INTO `casemanagerreport` (`userId`,`date`,`numConsumer`,`numVisits`,`numL2Ref`,`numL3Ref`,`numL2Seen`,`numL3Seen`,`numPCPReachedOut`,`numPCPAppts`,`numCM`,`numEpisodeOpened`,`numEpisodeClosed`,`numHPOnCaseloadDueToExpire`,`numOutsideMeeting`,`numVisitNextWeek`,`numNonCompliantChart`) VALUES 
+ ('Administrator','2012-03-19 00:00:00',1,2,1,1,0,0,0,0,0,0,0,0,0,0,0),
+ ('Administrator','2012-03-20 00:00:00',0,0,0,2,0,0,0,0,0,0,0,0,0,0,0),
+ ('Administrator','2012-03-21 00:00:00',0,0,0,0,3,0,0,0,0,0,0,0,0,0,0),
+ ('Administrator','2012-03-22 00:00:00',0,0,0,0,0,4,0,0,0,0,0,0,0,0,0),
+ ('Administrator','2012-03-23 00:00:00',0,0,0,0,2,0,0,0,0,0,0,0,0,0,0),
+ ('Administrator','2012-03-24 00:00:00',0,0,1,0,0,0,5,0,0,0,0,0,0,0,0),
+ ('demo','2012-03-26 00:00:00',2,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+ ('demo','2012-03-27 00:00:00',0,3,0,0,0,0,0,0,0,0,0,0,0,0,0),
+ ('demo','2012-03-28 00:00:00',0,0,5,0,0,0,0,0,0,0,0,0,0,0,0),
+ ('demo','2012-03-29 00:00:00',0,0,0,7,0,0,0,0,0,0,0,0,0,0,0),
+ ('demo','2012-03-30 00:00:00',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+ ('demo','2012-03-31 00:00:00',0,0,0,0,0,0,0,9,0,0,0,0,0,0,0),
+ ('jeff','2012-03-19 00:00:00',1,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+ ('jeff','2012-03-20 00:00:00',2,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+ ('jeff','2012-03-21 00:00:00',3,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+ ('jeff','2012-03-22 00:00:00',0,4,0,0,0,0,0,0,0,0,0,0,0,0,0),
+ ('jeff','2012-03-23 00:00:00',0,0,5,0,0,0,0,0,0,0,0,0,0,0,0),
+ ('jeff','2012-03-24 00:00:00',0,0,0,6,0,0,0,0,0,0,0,0,0,0,0);
+/*!40000 ALTER TABLE `casemanagerreport` ENABLE KEYS */;
 
 
 --
@@ -3709,7 +3787,7 @@ CREATE TABLE `permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `AK_permission_1` (`object`,`userId`),
   CONSTRAINT `FK_permission_1` FOREIGN KEY (`object`) REFERENCES `permission_type` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `permission`
@@ -3717,9 +3795,16 @@ CREATE TABLE `permission` (
 
 /*!40000 ALTER TABLE `permission` DISABLE KEYS */;
 INSERT INTO `permission` (`id`,`object`,`userId`) VALUES 
+ (6,'Administrative Staff Report','Administrator'),
  (2,'Case Manager Report','Administrator'),
+ (10,'Case Manager Report','demo'),
+ (9,'Case Manager Report','jeff'),
+ (8,'Case Manager Report for Manager','Administrator'),
+ (11,'Case Manager Report for Manager','manager'),
  (3,'Daily Clinic Report','Administrator'),
  (4,'Daily Clinic Report for Manager','Administrator'),
+ (7,'Intake Staff Report','Administrator'),
+ (5,'UR Staff Report','Administrator'),
  (1,'User Admin','Administrator');
 /*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 
@@ -3740,10 +3825,12 @@ CREATE TABLE `permission_type` (
 
 /*!40000 ALTER TABLE `permission_type` DISABLE KEYS */;
 INSERT INTO `permission_type` (`name`) VALUES 
+ ('Accounting Report'),
  ('Administrative Staff Report'),
  ('Analytics'),
  ('Billing Staff Report'),
  ('Case Manager Report'),
+ ('Case Manager Report for Manager'),
  ('Daily Clinic Report'),
  ('Daily Clinic Report for Manager'),
  ('Data Staff Report'),
