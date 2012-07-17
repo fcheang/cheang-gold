@@ -9,7 +9,6 @@ and rs.createDate between '2011-07-01' and now()
 and rs.status = 'Not Scheduled';
 and r.referralId != -1
 
-
 -- num of "alameda county" children's referrals who is also flagged as CFS (children)
 -- from 7/1/2011 to now
 -- 477
@@ -97,3 +96,42 @@ select count(*)
 from appointment where isWalkIn = 1
 and appointmentDate between date_sub(now(), interval 6 month) and now()
 and provider = 'Dr. Reminajes';
+
+-- Zip Code Info for Contra Costa County & Antioch Clinics
+select zipCode, count(*)
+from referral r, referralStatus rs
+where r.clinic in ('Contra Costa', 'Antioch')
+and r.referralId = rs.referralId
+and rs.createDate between date_sub(now(), interval 6 month) and now()
+and rs.status = 'Not Scheduled'
+and r.referralId != -1
+group by zipCode
+order by count(*) desc;
+
+-- # of Appointments Scheduled for this 6 month period for Adult
+select count(*) from appointment a, referral r
+where a.clinicName = 'Contra Costa'
+and a.appointmentDate between '2011-12-1' and '2012-5-30'
+and a.referralId >= 0
+and a.referralId = r.referralId
+and r.isChild = 0;
+
+-- # of new patients admitted for this 6 month period for Adult
+select count(r.referralId) from referral r, referralStatus rs
+where r.referralId = rs.referralId
+and rs.status = 'Not Scheduled'
+and rs.createDate between '2011-12-1' and '2012-5-30'
+and rs.createDate < rs.removeDate
+and r.clinic = 'Contra Costa'
+and r.isChild = 0;
+
+-- # of no show during this 6 month period for Adult
+select count(r.referralId)
+from referral r, referralStatus rs, appointment a
+where r.referralId = rs.referralId
+and rs.status = 'Not Seen'
+and a.apptId = rs.apptId
+and r.referralId = rs.referralId
+and a.appointmentDate between '2012-1-1' and '2012-5-30'
+and a.clinicName = 'Contra Costa'
+and r.isChild = 0
