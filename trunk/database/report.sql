@@ -6,7 +6,7 @@ where r.isChild = 1
 and r.clinic in ('Oakland', 'Union City', 'Pleasanton')
 and r.referralId = rs.referralId
 and rs.createDate between '2011-07-01' and now()
-and rs.status = 'Not Scheduled';
+and rs.status = 'Not Scheduled'
 and r.referralId != -1
 
 -- num of "alameda county" children's referrals who is also flagged as CFS (children)
@@ -89,6 +89,16 @@ where rs1.status = 'Not Scheduled'
 group by rs1.referralId, rs1.createDate
 ) rs
 
+-- how many clients needed “interpreters” from 7/1/2011 to now
+select count(1)
+from referral r, referralStatus rs
+where r.isChild = 0
+and r.clinic in ('Oakland', 'Union City', 'Pleasanton')
+and r.referralId = rs.referralId
+and rs.createDate between '2011-07-01' and now()
+and rs.status = 'Not Scheduled'
+and r.referralId != -1
+and r.translationSvcNeeded = 1
 
 -- num walk in patient in the last 6 months that Dr. Reminajes saw
 -- 125
@@ -135,3 +145,4 @@ and r.referralId = rs.referralId
 and a.appointmentDate between '2012-1-1' and '2012-5-30'
 and a.clinicName = 'Contra Costa'
 and r.isChild = 0
+
