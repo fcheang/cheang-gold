@@ -1,7 +1,7 @@
 -- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
--- Server version	5.1.60-community
+-- Server version	5.1.22-rc-community
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -20,61 +20,6 @@
 
 CREATE DATABASE IF NOT EXISTS gold;
 USE gold;
-
---
--- Definition of table `account_name`
---
-
-DROP TABLE IF EXISTS `account_name`;
-CREATE TABLE `account_name` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UK_account_name_1` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `account_name`
---
-
-/*!40000 ALTER TABLE `account_name` DISABLE KEYS */;
-INSERT INTO `account_name` (`id`,`name`) VALUES 
- (5,'AA'),
- (1,'BHR'),
- (4,'HHI CCC'),
- (2,'HHI Oak/UC'),
- (3,'HHI PL'),
- (6,'Waraich');
-/*!40000 ALTER TABLE `account_name` ENABLE KEYS */;
-
-
---
--- Definition of table `accounting_report`
---
-
-DROP TABLE IF EXISTS `accounting_report`;
-CREATE TABLE `accounting_report` (
-  `dateOfWeek` datetime NOT NULL,
-  `accountId` int(10) unsigned NOT NULL,
-  `numBills` int(10) unsigned NOT NULL DEFAULT '0',
-  `amtPaid` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `numChecks` int(10) unsigned NOT NULL DEFAULT '0',
-  `amtChecks` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `amtCashCollected` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `numCheckDeposited` int(10) unsigned NOT NULL DEFAULT '0',
-  `amtDeposited` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  PRIMARY KEY (`dateOfWeek`,`accountId`),
-  KEY `FK_accounting_report_1` (`accountId`),
-  CONSTRAINT `FK_accounting_report_1` FOREIGN KEY (`accountId`) REFERENCES `account_name` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `accounting_report`
---
-
-/*!40000 ALTER TABLE `accounting_report` DISABLE KEYS */;
-/*!40000 ALTER TABLE `accounting_report` ENABLE KEYS */;
-
 
 --
 -- Definition of table `appointment`
@@ -192,41 +137,10 @@ INSERT INTO `appointment` (`referralId`,`clinicName`,`appointmentDate`,`provider
  (3113,'Oakland','2005-11-29 09:00:00','Dr. Harris',1,'',1,'1st appt;reqDr.Harris 8-9amw/ MHS','remote','2005-11-29 10:00:00','Appointment',0,NULL,'',5856,'remote','2005-11-27 18:41:23',0,NULL,NULL),
  (3111,'Contra Costa','2005-11-03 09:00:00','David Behar',1,'',1,'','ben','2005-11-03 10:00:00','Appointment',0,NULL,'',5859,'ben','2005-12-18 09:24:30',0,NULL,NULL),
  (-1,'Contra Costa','2006-03-26 10:20:00','David Behar',1,'',1,'abc','demo','2006-03-26 11:20:00','Blocked',0,NULL,'',5864,'demo','2006-03-26 09:22:15',0,NULL,NULL),
- (3120,'Contra Costa','2006-03-26 09:00:00','David Behar',1,'',1,'','demo','2006-03-26 10:00:00','Appointment',0,NULL,'',5865,'demo','2006-03-26 09:24:24',0,NULL,NULL);
+ (3120,'Contra Costa','2006-03-26 09:00:00','David Behar',1,'',1,'','demo','2006-03-26 10:00:00','Appointment',0,NULL,'',5865,'demo','2006-03-26 09:24:24',0,NULL,NULL),
+ (3111,'Contra Costa','2015-09-19 10:00:00','David Behar',1,'Chinese',1,'','demo','2015-09-19 11:00:00','Appointment',0,NULL,'',5871,'demo','2015-09-19 09:54:28',0,'',''),
+ (3111,'Contra Costa','2015-09-19 09:00:00','David Behar',1,'',1,'','demo','2015-09-19 10:00:00','Appointment',0,NULL,'',5872,'demo','2015-09-19 10:01:09',0,'','');
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
-
-
---
--- Definition of table `billing_task`
---
-
-DROP TABLE IF EXISTS `billing_task`;
-CREATE TABLE `billing_task` (
-  `userId` varchar(20) NOT NULL,
-  `date` datetime NOT NULL,
-  `claims_dropped_c` int(10) unsigned NOT NULL DEFAULT '0',
-  `claims_dropped_p` int(10) unsigned NOT NULL DEFAULT '0',
-  `errors` int(10) unsigned NOT NULL DEFAULT '0',
-  `denials` int(10) unsigned NOT NULL DEFAULT '0',
-  `followups` int(10) unsigned NOT NULL DEFAULT '0',
-  `appeals` int(10) unsigned NOT NULL DEFAULT '0',
-  `hmo_amt` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `ac_amt` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `ccc_amt` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `private_amt` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `other_amt` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `other_task1` varchar(100) DEFAULT NULL,
-  `other_task2` varchar(100) DEFAULT NULL,
-  `other_task3` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`userId`,`date`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `billing_task`
---
-
-/*!40000 ALTER TABLE `billing_task` DISABLE KEYS */;
-/*!40000 ALTER TABLE `billing_task` ENABLE KEYS */;
 
 
 --
@@ -352,87 +266,6 @@ INSERT INTO `capability` (`roleName`,`permission`,`object`) VALUES
 
 
 --
--- Definition of table `casemanagernote`
---
-
-DROP TABLE IF EXISTS `casemanagernote`;
-CREATE TABLE `casemanagernote` (
-  `userId` varchar(20) NOT NULL,
-  `dateOfWeek` datetime NOT NULL,
-  `plan` varchar(200) DEFAULT NULL,
-  `action` varchar(200) DEFAULT NULL,
-  `assistanceNeeded` varchar(200) DEFAULT NULL,
-  `plansForNextWeek` varchar(200) DEFAULT NULL,
-  `other` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`userId`,`dateOfWeek`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `casemanagernote`
---
-
-/*!40000 ALTER TABLE `casemanagernote` DISABLE KEYS */;
-INSERT INTO `casemanagernote` (`userId`,`dateOfWeek`,`plan`,`action`,`assistanceNeeded`,`plansForNextWeek`,`other`) VALUES 
- ('Administrator','2012-03-18 00:00:00','abc',NULL,NULL,NULL,NULL),
- ('demo','2012-03-25 00:00:00','T1','t2','t3','t4','t5'),
- ('jeff','2012-03-18 00:00:00','Test1','Test2','Test3','Test4','Test5');
-/*!40000 ALTER TABLE `casemanagernote` ENABLE KEYS */;
-
-
---
--- Definition of table `casemanagerreport`
---
-
-DROP TABLE IF EXISTS `casemanagerreport`;
-CREATE TABLE `casemanagerreport` (
-  `userId` varchar(20) NOT NULL,
-  `date` datetime NOT NULL,
-  `numConsumer` int(10) unsigned NOT NULL DEFAULT '0',
-  `numVisits` int(10) unsigned NOT NULL DEFAULT '0',
-  `numL2Ref` int(10) unsigned NOT NULL DEFAULT '0',
-  `numL3Ref` int(10) unsigned NOT NULL DEFAULT '0',
-  `numL2Seen` int(10) unsigned NOT NULL DEFAULT '0',
-  `numL3Seen` int(10) unsigned NOT NULL DEFAULT '0',
-  `numPCPReachedOut` int(10) unsigned NOT NULL DEFAULT '0',
-  `numPCPAppts` int(10) unsigned NOT NULL DEFAULT '0',
-  `numCM` int(10) unsigned NOT NULL DEFAULT '0',
-  `numEpisodeOpened` int(10) unsigned NOT NULL DEFAULT '0',
-  `numEpisodeClosed` int(10) unsigned NOT NULL DEFAULT '0',
-  `numHPOnCaseloadDueToExpire` int(10) unsigned NOT NULL DEFAULT '0',
-  `numOutsideMeeting` int(10) unsigned NOT NULL DEFAULT '0',
-  `numVisitNextWeek` int(10) unsigned NOT NULL DEFAULT '0',
-  `numNonCompliantChart` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`userId`,`date`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `casemanagerreport`
---
-
-/*!40000 ALTER TABLE `casemanagerreport` DISABLE KEYS */;
-INSERT INTO `casemanagerreport` (`userId`,`date`,`numConsumer`,`numVisits`,`numL2Ref`,`numL3Ref`,`numL2Seen`,`numL3Seen`,`numPCPReachedOut`,`numPCPAppts`,`numCM`,`numEpisodeOpened`,`numEpisodeClosed`,`numHPOnCaseloadDueToExpire`,`numOutsideMeeting`,`numVisitNextWeek`,`numNonCompliantChart`) VALUES 
- ('Administrator','2012-03-19 00:00:00',1,2,1,1,0,0,0,0,0,0,0,0,0,0,0),
- ('Administrator','2012-03-20 00:00:00',0,0,0,2,0,0,0,0,0,0,0,0,0,0,0),
- ('Administrator','2012-03-21 00:00:00',0,0,0,0,3,0,0,0,0,0,0,0,0,0,0),
- ('Administrator','2012-03-22 00:00:00',0,0,0,0,0,4,0,0,0,0,0,0,0,0,0),
- ('Administrator','2012-03-23 00:00:00',0,0,0,0,2,0,0,0,0,0,0,0,0,0,0),
- ('Administrator','2012-03-24 00:00:00',0,0,1,0,0,0,5,0,0,0,0,0,0,0,0),
- ('demo','2012-03-26 00:00:00',2,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
- ('demo','2012-03-27 00:00:00',0,3,0,0,0,0,0,0,0,0,0,0,0,0,0),
- ('demo','2012-03-28 00:00:00',0,0,5,0,0,0,0,0,0,0,0,0,0,0,0),
- ('demo','2012-03-29 00:00:00',0,0,0,7,0,0,0,0,0,0,0,0,0,0,0),
- ('demo','2012-03-30 00:00:00',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
- ('demo','2012-03-31 00:00:00',0,0,0,0,0,0,0,9,0,0,0,0,0,0,0),
- ('jeff','2012-03-19 00:00:00',1,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
- ('jeff','2012-03-20 00:00:00',2,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
- ('jeff','2012-03-21 00:00:00',3,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
- ('jeff','2012-03-22 00:00:00',0,4,0,0,0,0,0,0,0,0,0,0,0,0,0),
- ('jeff','2012-03-23 00:00:00',0,0,5,0,0,0,0,0,0,0,0,0,0,0,0),
- ('jeff','2012-03-24 00:00:00',0,0,0,6,0,0,0,0,0,0,0,0,0,0,0);
-/*!40000 ALTER TABLE `casemanagerreport` ENABLE KEYS */;
-
-
---
 -- Definition of table `clinic`
 --
 
@@ -463,58 +296,6 @@ INSERT INTO `clinic` (`name`,`streetAddress`,`city`,`state`,`zipCode`,`phoneNumb
  ('Pleasanton','5674 Stoneridge Dr #116','Pleasanton','CA','94588','9255200066','','9255200010',''),
  ('Long Beach','4241 Long Beach Blvd.','Long Beach','CA','90807','5629881700','','5629881712','');
 /*!40000 ALTER TABLE `clinic` ENABLE KEYS */;
-
-
---
--- Definition of table `contribution`
---
-
-DROP TABLE IF EXISTS `contribution`;
-CREATE TABLE `contribution` (
-  `userId` varchar(20) NOT NULL,
-  `date` datetime NOT NULL,
-  `hrs_worked` decimal(10,1) unsigned NOT NULL DEFAULT '0.0',
-  `auths_entered` varchar(100) DEFAULT NULL,
-  `interpreters_ordered` varchar(100) DEFAULT NULL,
-  `collateral_received` varchar(100) DEFAULT NULL,
-  `other` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`userId`,`date`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `contribution`
---
-
-/*!40000 ALTER TABLE `contribution` DISABLE KEYS */;
-/*!40000 ALTER TABLE `contribution` ENABLE KEYS */;
-
-
---
--- Definition of table `contribution_item`
---
-
-DROP TABLE IF EXISTS `contribution_item`;
-CREATE TABLE `contribution_item` (
-  `userId` varchar(20) NOT NULL,
-  `date` datetime NOT NULL,
-  `type` varchar(100) NOT NULL,
-  `private_pay` int(10) unsigned NOT NULL DEFAULT '0',
-  `hmo` int(10) unsigned NOT NULL DEFAULT '0',
-  `ac` int(10) unsigned NOT NULL DEFAULT '0',
-  `ac_child` int(10) unsigned NOT NULL DEFAULT '0',
-  `ccc` int(10) unsigned NOT NULL DEFAULT '0',
-  `ccc_child` int(10) unsigned NOT NULL DEFAULT '0',
-  `sf` int(10) unsigned NOT NULL DEFAULT '0',
-  `other` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`userId`,`date`,`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `contribution_item`
---
-
-/*!40000 ALTER TABLE `contribution_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `contribution_item` ENABLE KEYS */;
 
 
 --
@@ -553,30 +334,6 @@ INSERT INTO `credential` (`providerId`,`insuranceProviderId`) VALUES
  (16,14),
  (16,15);
 /*!40000 ALTER TABLE `credential` ENABLE KEYS */;
-
-
---
--- Definition of table `data_compliance_task`
---
-
-DROP TABLE IF EXISTS `data_compliance_task`;
-CREATE TABLE `data_compliance_task` (
-  `userId` varchar(20) NOT NULL,
-  `date` datetime NOT NULL,
-  `eps_opened` int(10) unsigned NOT NULL DEFAULT '0',
-  `bill_errs_found` int(10) unsigned NOT NULL DEFAULT '0',
-  `charts_reviewed` int(10) unsigned NOT NULL DEFAULT '0',
-  `chart_errs_found` int(10) unsigned NOT NULL DEFAULT '0',
-  `items_entered` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`userId`,`date`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `data_compliance_task`
---
-
-/*!40000 ALTER TABLE `data_compliance_task` DISABLE KEYS */;
-/*!40000 ALTER TABLE `data_compliance_task` ENABLE KEYS */;
 
 
 --
@@ -700,10 +457,10 @@ CREATE TABLE `deletedreferral` (
 DROP TABLE IF EXISTS `employee`;
 CREATE TABLE `employee` (
   `empId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(45) DEFAULT NULL,
   `firstName` varchar(45) NOT NULL,
   `lastName` varchar(45) NOT NULL,
   `middleName` varchar(45) DEFAULT NULL,
+  `title` varchar(45) DEFAULT NULL,
   `isActive` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`empId`),
   UNIQUE KEY `AK_Employee_1` (`firstName`,`lastName`)
@@ -3755,139 +3512,6 @@ INSERT INTO `logsheet` (`clientName`,`initialCallDate`,`letterMailDate`,`firstCa
 
 
 --
--- Definition of table `other_billing_task`
---
-
-DROP TABLE IF EXISTS `other_billing_task`;
-CREATE TABLE `other_billing_task` (
-  `userId` varchar(20) NOT NULL,
-  `date` datetime NOT NULL,
-  `task` varchar(200) NOT NULL,
-  `count` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`userId`,`date`,`task`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `other_billing_task`
---
-
-/*!40000 ALTER TABLE `other_billing_task` DISABLE KEYS */;
-/*!40000 ALTER TABLE `other_billing_task` ENABLE KEYS */;
-
-
---
--- Definition of table `permission`
---
-
-DROP TABLE IF EXISTS `permission`;
-CREATE TABLE `permission` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `object` varchar(100) NOT NULL,
-  `userId` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `AK_permission_1` (`object`,`userId`),
-  CONSTRAINT `FK_permission_1` FOREIGN KEY (`object`) REFERENCES `permission_type` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `permission`
---
-
-/*!40000 ALTER TABLE `permission` DISABLE KEYS */;
-INSERT INTO `permission` (`id`,`object`,`userId`) VALUES 
- (6,'Administrative Staff Report','Administrator'),
- (2,'Case Manager Report','Administrator'),
- (10,'Case Manager Report','demo'),
- (9,'Case Manager Report','jeff'),
- (8,'Case Manager Report for Manager','Administrator'),
- (11,'Case Manager Report for Manager','manager'),
- (3,'Daily Clinic Report','Administrator'),
- (4,'Daily Clinic Report for Manager','Administrator'),
- (7,'Intake Staff Report','Administrator'),
- (5,'UR Staff Report','Administrator'),
- (1,'User Admin','Administrator');
-/*!40000 ALTER TABLE `permission` ENABLE KEYS */;
-
-
---
--- Definition of table `permission_type`
---
-
-DROP TABLE IF EXISTS `permission_type`;
-CREATE TABLE `permission_type` (
-  `name` varchar(100) NOT NULL,
-  PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `permission_type`
---
-
-/*!40000 ALTER TABLE `permission_type` DISABLE KEYS */;
-INSERT INTO `permission_type` (`name`) VALUES 
- ('Accounting Report'),
- ('Administrative Staff Report'),
- ('Analytics'),
- ('Billing Staff Report'),
- ('Case Manager Report'),
- ('Case Manager Report for Manager'),
- ('Daily Clinic Report'),
- ('Daily Clinic Report for Manager'),
- ('Data Staff Report'),
- ('Employee'),
- ('Intake Staff Report'),
- ('UR Staff Report'),
- ('User Admin');
-/*!40000 ALTER TABLE `permission_type` ENABLE KEYS */;
-
-
---
--- Definition of table `project_list`
---
-
-DROP TABLE IF EXISTS `project_list`;
-CREATE TABLE `project_list` (
-  `userId` varchar(20) NOT NULL,
-  `date` datetime NOT NULL,
-  `task1` varchar(100) DEFAULT NULL,
-  `task2` varchar(100) DEFAULT NULL,
-  `task3` varchar(100) DEFAULT NULL,
-  `task4` varchar(100) DEFAULT NULL,
-  `task5` varchar(100) DEFAULT NULL,
-  `task6` varchar(100) DEFAULT NULL,
-  `task7` varchar(100) DEFAULT NULL,
-  `task8` varchar(100) DEFAULT NULL,
-  `task9` varchar(100) DEFAULT NULL,
-  `task10` varchar(100) DEFAULT NULL,
-  `task11` varchar(100) DEFAULT NULL,
-  `task12` varchar(100) DEFAULT NULL,
-  `task13` varchar(100) DEFAULT NULL,
-  `task14` varchar(100) DEFAULT NULL,
-  `task15` varchar(100) DEFAULT NULL,
-  `task16` varchar(100) DEFAULT NULL,
-  `task17` varchar(100) DEFAULT NULL,
-  `task18` varchar(100) DEFAULT NULL,
-  `task19` varchar(100) DEFAULT NULL,
-  `task20` varchar(100) DEFAULT NULL,
-  `task21` varchar(100) DEFAULT NULL,
-  `task22` varchar(100) DEFAULT NULL,
-  `task23` varchar(100) DEFAULT NULL,
-  `task24` varchar(100) DEFAULT NULL,
-  `task25` varchar(100) DEFAULT NULL,
-  `task26` varchar(100) DEFAULT NULL,
-  `task27` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`userId`,`date`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `project_list`
---
-
-/*!40000 ALTER TABLE `project_list` DISABLE KEYS */;
-/*!40000 ALTER TABLE `project_list` ENABLE KEYS */;
-
-
---
 -- Definition of table `provider`
 --
 
@@ -4016,30 +3640,30 @@ CREATE TABLE `referral` (
 
 /*!40000 ALTER TABLE `referral` DISABLE KEYS */;
 INSERT INTO `referral` (`referralId`,`firstName`,`middleInitial`,`lastName`,`gender`,`ssn`,`birthDate`,`streetAddress`,`apartmentNumber`,`city`,`state`,`zipCode`,`phoneNumber`,`email`,`legalGardianFirstName`,`legalGardianLastName`,`legalGardianMiddleInitial`,`legalGardianPhoneNumber`,`previousPsychiatrist`,`lastSeen`,`currentMedications`,`daysLeft`,`previousMedications`,`previousDx`,`presentingProblem`,`needMedicalMgntSvc`,`needTherapy`,`isUrgent`,`clinic`,`comments`,`isChild`,`userId`,`modifyBy`,`modificationDate`,`reminder`,`balance`,`balanceNotes`,`translationSvcNeeded`,`discharged`,`dischargeDate`) VALUES 
- (14,'Smith',NULL,'Smith','male','G4QFus4NiWSf1AeR8Dy/Ow==','1973-01-21','555 Starling Dr.',NULL,'Union City','CA','94587','5104873468',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Risperdal, Prozac',0,NULL,'Schizophrenia, Depression',NULL,1,0,'no','Union City',NULL,0,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (4,'Harris',NULL,'Harris','male','frtYykzuj9BIooYOcWMsYQ==','1967-10-20','1234 abc street',NULL,'Oakland','CA','94609','5108888888',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'no','Oakland',NULL,0,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (6,'Escober',NULL,'Escober','female','AvvOGFhg3q3CL87U92zxNQ==','1971-12-12','PO Box 111',NULL,'Sunol','CA','94586','5103333333',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'no','Union City',NULL,0,'Unknown',NULL,NULL,'This is a test to collect $200.00 for co-pay.','0.00',NULL,0,0,NULL),
- (7,'thompson',NULL,'thompson','male','4zDzeR3WPM6/alcLvQwChA==','1990-02-25','Po Box 8888',NULL,'stockton','CA','95269','5105478207',NULL,'Rita','Mullins',NULL,'5104444444',NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'no','Oakland',NULL,1,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (8,'bobo',NULL,'bobo','female','7m6kDgnp3a3XnIo3j/eUVQ==','1967-11-30','123 E. Street',NULL,'oakland','CA','94603','9161231234',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Paxil CR',0,NULL,NULL,NULL,1,0,'no','Oakland',NULL,0,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (10,'smith',NULL,'smith','female','AUrTJ9SofJvJYjPW/vGnqA==','1979-07-20','1236 college ave.','143','oakland','CA','94618','5104584567',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'no','Oakland',NULL,0,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (11,'Madrid-Ibarra','M','Madrid-Ibarra','male','7lKXPo89BUUAyMYS5suvNQ==','1985-08-20','3689 wicks blvd',NULL,'san leandro','CA','94579','5102344321',NULL,'mary','madrid',NULL,'5109876543',NULL,NULL,'none',0,NULL,'ADHD',NULL,1,0,'no','Union City',NULL,0,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (12,'coleman',NULL,'coleman','female','0ssahdtsOMqjT/bvRp6Yhw==','1977-03-13','555 w. macarthur','529','oakland','CA','94611','5105557777',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'no','Oakland',NULL,0,'Unknown',NULL,NULL,'','0.00',NULL,0,0,NULL),
- (13,'nickoloson',NULL,'nickoloson','male','55x2YxiQZ2uppRHRyhWZbw==','1963-09-28','555 w. macarthur blvd',NULL,'oakland','CA','94609','5108961234',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,0,'no','Oakland',NULL,0,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (15,'Wong',NULL,'Wong','female','mshTtMS1vknn15QsruvY5Q==','1985-02-20','744 Paseo Del Rio',NULL,'San Lorenzo','CA','94580','5100000001',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'none',0,NULL,'PTSD',NULL,1,0,'no','Union City',NULL,0,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (3110,'Smith',NULL,'Smith','male','kbbGI9AgavhsBP1Z0CbzIw==','1970-12-12',NULL,NULL,'wqerwq','CA',NULL,'2132133432',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,1,'no','Oakland',NULL,0,'remote',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (3108,'lee',NULL,'lee','male','nFEKH+nL+XnfQPONIh+1hQ==','1972-10-10','123 A Street',NULL,'Oakland','CA','95487','5103333333',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,0,'no','Contra Costa',NULL,0,NULL,NULL,NULL,'','0.00',NULL,0,0,NULL),
- (3109,'Smith','k','Smith','male','gyJJQnsh6LrUte6shgK9UQ==','1972-10-29',NULL,NULL,'San Jose','CA',NULL,'7854584584',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'yes','Oakland',NULL,0,'remote',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (3111,'Ang-Bobo',NULL,'Ang-Bobo','female','hkoUsO8QC4meIp2tXWZTkA==','1958-02-01',NULL,NULL,'oakland','CA',NULL,'5106521542',NULL,NULL,NULL,NULL,NULL,'Dr. Zuberi','2002-05-04','paxil CR',10,'zoloft','depression',NULL,1,1,'yes','Union City',NULL,0,'remote',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (3113,'Ilagan',NULL,'Ilagan','male','frtYykzuj9BIooYOcWMsYQ==','1976-03-18','1258 Meadown wood lane','Apt 3','Hayward','CA','94589','5106541234',NULL,NULL,NULL,NULL,NULL,'Dr. Ogatis','2000-12-15','Paxil',8,'Zoloft and Lithium','Depression','Client has recently felt depressed and has no motivation to go to work or attend to kids. Client has previous history',1,1,'yes','Union City',NULL,0,'remote',NULL,NULL,'HAVE PT fill-up ADULT Intake package','0.00',NULL,0,0,NULL),
- (3114,'Lopez',NULL,'Lopez','male','0J1cWp2aFEJ7iGpU+TFVEA==','1976-10-18','589 Travis Street',NULL,'Union CIty','CA','94589','5109856321',NULL,'Maria Sol','Lopez',NULL,'5109856321',NULL,NULL,NULL,0,NULL,NULL,'Child having difficulty focusing on school work; behavior disruptive, mood swings.',1,1,'yes','Union City',NULL,0,NULL,NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (3117,'doe',NULL,'doe','female','ER2RMNaFC0sYV+zpifIoDw==','2007-01-16',NULL,NULL,'oakland','CA','94609','5109999999',NULL,'mama','papa',NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,1,'48hrs','Oakland',NULL,1,'remote',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (3116,'Scotts',NULL,'Scotts','male','tqLadW9ar+VjFoWL7LZx2w==','1976-06-21','1234 Amber street','a12','vallejo','CA','94587','7075571477',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,'Test PT only',1,1,'yes','Union City',NULL,0,'remote',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (3121,'Schmo',NULL,'Schmo','male','Zf+Kh7pQN2oc/FzdyDonFg==','1980-01-01',NULL,NULL,'Oakland','CA','94609','5102222222',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,'depression',1,0,'no','Oakland',NULL,0,'remote',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (3118,'Bonga',NULL,'Bonga','male','/CFYIz4LLllr9lxhWPlmhg==','1901-01-16',NULL,NULL,'San Ramon','CA','95302','4155555555',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,1,'48hrs','Oakland',NULL,0,NULL,NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (3119,'Doe',NULL,'Doe','male','ER2RMNaFC0sYV+zpifIoDw==','1980-03-15',NULL,NULL,'Oakland','CA','94607','5105101111',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'yes','Oakland',NULL,0,NULL,NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (3120,'Doz',NULL,'Doz','male','SjRZl4wI8l93Y7p1ZVz0mw==','1970-01-01',NULL,NULL,'Fremont','CA','94538','5102222222',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'48hrs','Pleasanton',NULL,0,'remote',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (3122,'Schmo',NULL,'Schmo','male','4zDzeR3WPM6/alcLvQwChA==','1980-03-22',NULL,NULL,'Oakland','CA','94609','5103333333',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'48hrs','Oakland',NULL,0,NULL,NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
- (3123,'Marsha',NULL,'Marsha','female','1WisQ2nf7Fgxp7I549ykiw==','1965-12-01',NULL,NULL,'Oakland','CA',NULL,'5101234567',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,1,'48hrs','Oakland',NULL,0,NULL,NULL,NULL,NULL,'0.00',NULL,0,0,NULL);
+ (14,'vES4U0VKcBtTAcPhl6+2kg==',NULL,'Smith','male','G4QFus4NiWSf1AeR8Dy/Ow==','1973-01-21','555 Starling Dr.',NULL,'Union City','CA','94587','5104873468',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Risperdal, Prozac',0,NULL,'Schizophrenia, Depression',NULL,1,0,'no','Union City',NULL,0,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (4,'jMzm+neVqgkJVoTLyFDRuA==',NULL,'Harris','male','frtYykzuj9BIooYOcWMsYQ==','1967-10-20','1234 abc street',NULL,'Oakland','CA','94609','5108888888',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'no','Oakland',NULL,0,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (6,'iAB4AfeD+MxvEN7hf0sQVQ==',NULL,'Escober','female','AvvOGFhg3q3CL87U92zxNQ==','1971-12-12','PO Box 111',NULL,'Sunol','CA','94586','5103333333',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'no','Union City',NULL,0,'Unknown',NULL,NULL,'This is a test to collect $200.00 for co-pay.','0.00',NULL,0,0,NULL),
+ (7,'2Ru4pSA6pZTPPmaOuhrkjg==',NULL,'thompson','male','4zDzeR3WPM6/alcLvQwChA==','1990-02-25','Po Box 8888',NULL,'stockton','CA','95269','5105478207',NULL,'Rita','Mullins',NULL,'5104444444',NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'no','Oakland',NULL,1,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (8,'gHC/Sk6n6pWrvNh+Z/DdBQ==',NULL,'bobo','female','7m6kDgnp3a3XnIo3j/eUVQ==','1967-11-30','123 E. Street',NULL,'oakland','CA','94603','9161231234',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Paxil CR',0,NULL,NULL,NULL,1,0,'no','Oakland',NULL,0,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (10,'2iLJE5Dj/tGYGX5jHEpcMw==',NULL,'smith','female','AUrTJ9SofJvJYjPW/vGnqA==','1979-07-20','1236 college ave.','143','oakland','CA','94618','5104584567',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'no','Oakland',NULL,0,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (11,'MV4AVgP7+51W9g6R0h3+zA==','M','Madrid-Ibarra','male','7lKXPo89BUUAyMYS5suvNQ==','1985-08-20','3689 wicks blvd',NULL,'san leandro','CA','94579','5102344321',NULL,'mary','madrid',NULL,'5109876543',NULL,NULL,'none',0,NULL,'ADHD',NULL,1,0,'no','Union City',NULL,0,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (12,'xrLIP/UNyX2taL0jhhie0g==',NULL,'coleman','female','0ssahdtsOMqjT/bvRp6Yhw==','1977-03-13','555 w. macarthur','529','oakland','CA','94611','5105557777',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'no','Oakland',NULL,0,'Unknown',NULL,NULL,'','0.00',NULL,0,0,NULL),
+ (13,'vc16URqMw/LbLRwbNbPpiw==',NULL,'nickoloson','male','55x2YxiQZ2uppRHRyhWZbw==','1963-09-28','555 w. macarthur blvd',NULL,'oakland','CA','94609','5108961234',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,0,'no','Oakland',NULL,0,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (15,'9kDvKPoWlPfdJSUFuT/xPg==',NULL,'Wong','female','mshTtMS1vknn15QsruvY5Q==','1985-02-20','744 Paseo Del Rio',NULL,'San Lorenzo','CA','94580','5100000001',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'none',0,NULL,'PTSD',NULL,1,0,'no','Union City',NULL,0,'Unknown',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (3110,'MV4AVgP7+51W9g6R0h3+zA==',NULL,'Smith','male','kbbGI9AgavhsBP1Z0CbzIw==','1970-12-12',NULL,NULL,'wqerwq','CA',NULL,'2132133432',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,1,'no','Oakland',NULL,0,'remote',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (3108,'nO6KPFHRfnT71h4/3Jz+yg==',NULL,'lee','male','nFEKH+nL+XnfQPONIh+1hQ==','1972-10-10','123 A Street',NULL,'Oakland','CA','95487','5103333333',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,0,0,'no','Contra Costa',NULL,0,NULL,NULL,NULL,'','0.00',NULL,0,0,NULL),
+ (3109,'IFfll6pgOv4xGVczbHHX7w==','k','Smith','male','gyJJQnsh6LrUte6shgK9UQ==','1972-10-29',NULL,NULL,'San Jose','CA',NULL,'7854584584',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'yes','Oakland',NULL,0,'remote',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (3111,'dOy1usBxXmKLvmJjTJ+MtA==',NULL,'Ang-Bobo','female','hkoUsO8QC4meIp2tXWZTkA==','1958-02-01',NULL,NULL,'oakland','CA',NULL,'5106521542',NULL,NULL,NULL,NULL,NULL,'Dr. Zuberi','2002-05-04','paxil CR',10,'zoloft','depression',NULL,1,1,'yes','Union City',NULL,0,'remote',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (3113,'CjwNpRswSjDddFj0kKDp6w==',NULL,'Ilagan','male','frtYykzuj9BIooYOcWMsYQ==','1976-03-18','1258 Meadown wood lane','Apt 3','Hayward','CA','94589','5106541234',NULL,NULL,NULL,NULL,NULL,'Dr. Ogatis','2000-12-15','Paxil',8,'Zoloft and Lithium','Depression','Client has recently felt depressed and has no motivation to go to work or attend to kids. Client has previous history',1,1,'yes','Union City',NULL,0,'remote',NULL,NULL,'HAVE PT fill-up ADULT Intake package','0.00',NULL,0,0,NULL),
+ (3114,'pFQJbBW3KElutt+Nvagymg==',NULL,'Lopez','male','0J1cWp2aFEJ7iGpU+TFVEA==','1976-10-18','589 Travis Street',NULL,'Union CIty','CA','94589','5109856321',NULL,'Maria Sol','Lopez',NULL,'5109856321',NULL,NULL,NULL,0,NULL,NULL,'Child having difficulty focusing on school work; behavior disruptive, mood swings.',1,1,'yes','Union City',NULL,0,NULL,NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (3117,'O99MDgGnIOkuH3RBy3ChnA==',NULL,'doe','female','ER2RMNaFC0sYV+zpifIoDw==','2007-01-16',NULL,NULL,'oakland','CA','94609','5109999999',NULL,'mama','papa',NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,1,'48hrs','Oakland',NULL,1,'remote',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (3116,'+NCQ/NcWyvgboxTeTgsasw==',NULL,'Scotts','male','tqLadW9ar+VjFoWL7LZx2w==','1976-06-21','1234 Amber street','a12','vallejo','CA','94587','7075571477',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,'Test PT only',1,1,'yes','Union City',NULL,0,'remote',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (3121,'oNKX9VospzNZrHmAT7ezaA==',NULL,'Schmo','male','Zf+Kh7pQN2oc/FzdyDonFg==','1980-01-01',NULL,NULL,'Oakland','CA','94609','5102222222',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,'depression',1,0,'no','Oakland',NULL,0,'remote',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (3118,'IFfll6pgOv4xGVczbHHX7w==',NULL,'Bonga','male','/CFYIz4LLllr9lxhWPlmhg==','1901-01-16',NULL,NULL,'San Ramon','CA','95302','4155555555',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,1,'48hrs','Oakland',NULL,0,NULL,NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (3119,'IFfll6pgOv4xGVczbHHX7w==',NULL,'Doe','male','ER2RMNaFC0sYV+zpifIoDw==','1980-03-15',NULL,NULL,'Oakland','CA','94607','5105101111',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'yes','Oakland',NULL,0,NULL,NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (3120,'CPMfnaskhLY0qFQ6Ic8ISA==',NULL,'Doz','male','SjRZl4wI8l93Y7p1ZVz0mw==','1970-01-01',NULL,NULL,'Fremont','CA','94538','5102222222',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'48hrs','Pleasanton',NULL,0,'remote',NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (3122,'xrKZQZFt4/P7ztNrUgxbKQ==',NULL,'Schmo','male','4zDzeR3WPM6/alcLvQwChA==','1980-03-22',NULL,NULL,'Oakland','CA','94609','5103333333',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,0,'48hrs','Oakland',NULL,0,NULL,NULL,NULL,NULL,'0.00',NULL,0,0,NULL),
+ (3123,'suxtTVEWBDNPdnG6XrhjSg==',NULL,'Marsha','female','1WisQ2nf7Fgxp7I549ykiw==','1965-12-01',NULL,NULL,'Oakland','CA',NULL,'5101234567',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,1,1,'48hrs','Oakland',NULL,0,NULL,NULL,NULL,NULL,'0.00',NULL,0,0,NULL);
 /*!40000 ALTER TABLE `referral` ENABLE KEYS */;
 
 
@@ -4173,7 +3797,9 @@ INSERT INTO `referralstatus` (`referralId`,`status`,`isActive`,`createDate`,`rem
  (3108,'Not Scheduled',1,'2005-10-03 00:00:00','2005-10-03 00:17:43',NULL,NULL,NULL),
  (3111,'Seen',1,'2005-12-18 09:24:44','2200-01-01 00:00:00','',5859,'Med Check'),
  (3120,'Scheduled',1,'2006-03-26 09:24:24','2006-03-26 09:24:27',NULL,5865,NULL),
- (3120,'Seen',1,'2006-03-26 09:24:27','2200-01-01 00:00:00','',5865,'Med Check');
+ (3120,'Seen',1,'2006-03-26 09:24:27','2200-01-01 00:00:00','',5865,'Med Check'),
+ (3111,'Scheduled',1,'2015-09-19 09:54:28','2200-01-01 00:00:00',NULL,5871,NULL),
+ (3111,'Scheduled',1,'2015-09-19 10:01:09','2200-01-01 00:00:00',NULL,5872,NULL);
 /*!40000 ALTER TABLE `referralstatus` ENABLE KEYS */;
 
 
@@ -4267,7 +3893,7 @@ CREATE TABLE `sequencegenerator` (
 /*!40000 ALTER TABLE `sequencegenerator` DISABLE KEYS */;
 INSERT INTO `sequencegenerator` (`tableName`,`nextSeq`) VALUES 
  ('referral',3123),
- ('appointment',5871),
+ ('appointment',5873),
  ('logSheet',1);
 /*!40000 ALTER TABLE `sequencegenerator` ENABLE KEYS */;
 
@@ -4314,34 +3940,6 @@ CREATE TABLE `trustedip` (
 INSERT INTO `trustedip` (`host`) VALUES 
  ('127.0.0.1');
 /*!40000 ALTER TABLE `trustedip` ENABLE KEYS */;
-
-
---
--- Definition of table `ur_personnel_task`
---
-
-DROP TABLE IF EXISTS `ur_personnel_task`;
-CREATE TABLE `ur_personnel_task` (
-  `userId` varchar(20) NOT NULL,
-  `date` datetime NOT NULL,
-  `charts_reviewed` int(10) unsigned NOT NULL DEFAULT '0',
-  `discharge_done` int(10) unsigned NOT NULL DEFAULT '0',
-  `bill_svc_provided` int(10) unsigned NOT NULL DEFAULT '0',
-  `eps_opened` int(10) unsigned NOT NULL DEFAULT '0',
-  `charts_transfered` int(10) unsigned NOT NULL DEFAULT '0',
-  `ru_completed` int(10) unsigned NOT NULL DEFAULT '0',
-  `md_charts_audited` int(10) unsigned NOT NULL DEFAULT '0',
-  `mhs_charts_audited` int(10) unsigned NOT NULL DEFAULT '0',
-  `tx_team_mtgs` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`userId`,`date`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `ur_personnel_task`
---
-
-/*!40000 ALTER TABLE `ur_personnel_task` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ur_personnel_task` ENABLE KEYS */;
 
 
 --
@@ -4459,29 +4057,26 @@ INSERT INTO `version` (`schemaVersion`,`lastUpdated`,`description`) VALUES
 
 DROP TABLE IF EXISTS `worksheet`;
 CREATE TABLE `worksheet` (
-  `providerId` int(10) unsigned NOT NULL,
+  `empId` int(10) unsigned NOT NULL,
   `date` datetime NOT NULL,
   `clinic` varchar(30) NOT NULL,
-  `hrs_worked` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+  `hrs_worked` int(10) unsigned NOT NULL DEFAULT '0',
   `county_seen` int(10) unsigned NOT NULL DEFAULT '0',
   `ccc_seen` int(10) unsigned NOT NULL DEFAULT '0',
   `hmo_seen` int(10) unsigned NOT NULL DEFAULT '0',
-  `other_seen` int(10) unsigned NOT NULL DEFAULT '0',
   `county_face_min` int(10) unsigned NOT NULL DEFAULT '0',
   `county_other_min` int(10) unsigned NOT NULL DEFAULT '0',
   `ccc_face_min` int(10) unsigned NOT NULL DEFAULT '0',
   `ccc_other_min` int(10) unsigned NOT NULL DEFAULT '0',
   `hmo_face_min` int(10) unsigned NOT NULL DEFAULT '0',
   `other_face_min` int(10) unsigned NOT NULL DEFAULT '0',
-  `num_scheduled` int(10) unsigned NOT NULL DEFAULT '0',
+  `num_schedule` int(10) unsigned NOT NULL DEFAULT '0',
   `num_noshow` int(10) unsigned NOT NULL DEFAULT '0',
   `num_cancel` int(10) unsigned NOT NULL DEFAULT '0',
   `num_new` int(10) unsigned NOT NULL DEFAULT '0',
   `num_dropin` int(10) unsigned NOT NULL DEFAULT '0',
-  `daily_salary` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `enteredBy` varchar(20) DEFAULT NULL,
-  `dateEntered` datetime DEFAULT NULL,
-  PRIMARY KEY (`providerId`,`date`,`clinic`)
+  PRIMARY KEY (`empId`,`date`,`clinic`),
+  CONSTRAINT `FK_Worksheet_1` FOREIGN KEY (`empId`) REFERENCES `employee` (`empId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
